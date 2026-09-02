@@ -662,12 +662,17 @@
     </div>
   </div>
 
-  <!-- Step 3: Address + Submit -->
+  <!-- Step 3: Your info + Submit -->
   <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:1.75rem;max-width:560px;">
-    <div class="label" style="margin-bottom:0.85rem;">Step 3 — Your address</div>
-    <input id="address-input" type="text" placeholder="123 Main St, Phoenix, AZ" style="width:100%;padding:0.65rem 0.9rem;border:1.5px solid var(--border);border-radius:8px;background:var(--bg);color:var(--ink);font-family:'DM Sans',sans-serif;font-size:0.95rem;margin-bottom:1rem;outline:none;" onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'">
-    <button id="book-btn" onclick="submitBooking()" style="width:100%;padding:0.85rem;background:var(--accent);color:#fff;border:none;border-radius:8px;font-family:'Outfit',sans-serif;font-weight:700;font-size:0.95rem;cursor:pointer;transition:background 0.15s;" onmouseover="this.style.background='var(--accent-dim)'" onmouseout="this.style.background='var(--accent)'">Request Appointment</button>
-    <p style="margin-top:0.85rem;font-size:0.8rem;color:var(--ink-faint);text-align:center;">This opens your email app with everything pre-filled. We'll confirm within a few hours.</p>
+    <div class="label" style="margin-bottom:0.85rem;">Step 3 — Your details</div>
+    <div style="display:flex;flex-direction:column;gap:0.75rem;">
+      <input id="inp-name" type="text" placeholder="Your name" style="width:100%;padding:0.65rem 0.9rem;border:1.5px solid var(--border);border-radius:8px;background:var(--bg);color:var(--ink);font-family:'DM Sans',sans-serif;font-size:0.95rem;outline:none;" onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'">
+      <input id="inp-phone" type="tel" placeholder="Phone number" style="width:100%;padding:0.65rem 0.9rem;border:1.5px solid var(--border);border-radius:8px;background:var(--bg);color:var(--ink);font-family:'DM Sans',sans-serif;font-size:0.95rem;outline:none;" onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'">
+      <input id="inp-address" type="text" placeholder="Your address (123 Main St, Phoenix, AZ)" style="width:100%;padding:0.65rem 0.9rem;border:1.5px solid var(--border);border-radius:8px;background:var(--bg);color:var(--ink);font-family:'DM Sans',sans-serif;font-size:0.95rem;outline:none;" onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'">
+      <textarea id="inp-notes" placeholder="Anything else we should know? (optional)" rows="3" style="width:100%;padding:0.65rem 0.9rem;border:1.5px solid var(--border);border-radius:8px;background:var(--bg);color:var(--ink);font-family:'DM Sans',sans-serif;font-size:0.95rem;outline:none;resize:vertical;" onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'"></textarea>
+    </div>
+    <button id="book-btn" onclick="submitBooking()" style="width:100%;margin-top:1rem;padding:0.85rem;background:var(--accent);color:#fff;border:none;border-radius:8px;font-family:'Outfit',sans-serif;font-weight:700;font-size:0.95rem;cursor:pointer;transition:background 0.15s;" onmouseover="this.style.background='var(--accent-dim)'" onmouseout="this.style.background='var(--accent)'">Send Appointment Request</button>
+    <div id="book-status" style="display:none;margin-top:0.85rem;padding:0.75rem;border-radius:8px;font-size:0.88rem;text-align:center;"></div>
   </div>
 
   <!-- Pay after note -->
@@ -786,23 +791,66 @@ var services = [
   container.appendChild(note);
 })();
 
+// ── PASTE YOUR WEB3FORMS ACCESS KEY BELOW ──
+// Get it free at web3forms.com — enter Cleaningcrew1101@gmail.com and copy the key
+var WEB3FORMS_KEY = '12eecb1a-f51b-44ea-b60d-e104ba5f6911';
+// ───────────────────────────────────────────
+
 function submitBooking() {
-  var address = document.getElementById('address-input').value.trim();
+  var name    = document.getElementById('inp-name').value.trim();
+  var phone   = document.getElementById('inp-phone').value.trim();
+  var address = document.getElementById('inp-address').value.trim();
+  var notes   = document.getElementById('inp-notes').value.trim();
   var svcList = Object.values(selectedServices);
+  var status  = document.getElementById('book-status');
+  var btn     = document.getElementById('book-btn');
 
-  if (!svcList.length) { alert('Please select at least one service.'); return; }
-  if (!selectedTime) { alert('Please pick a time slot.'); return; }
-  if (!address) { alert('Please enter your address.'); return; }
+  if (!name)          { alert('Please enter your name.'); return; }
+  if (!svcList.length){ alert('Please select at least one service.'); return; }
+  if (!selectedTime)  { alert('Please pick a time slot.'); return; }
+  if (!address)       { alert('Please enter your address.'); return; }
 
-  var subject = encodeURIComponent('Appointment Request — ' + selectedTime);
-  var body = encodeURIComponent(
-    'Hi Cleaning Crew!\n\n' +
-    'Services needed:\n' + svcList.map(function(s){ return '  • ' + s; }).join('\n') + '\n\n' +
-    'Requested time: ' + selectedTime + '\n\n' +
-    'Address: ' + address + '\n\n' +
-    'Anything else:\n'
-  );
-  window.location.href = 'mailto:Cleaningcrew1101@gmail.com?subject=' + subject + '&body=' + body;
+  btn.textContent = 'Sending…';
+  btn.disabled = true;
+
+  var message =
+    'Services: ' + svcList.join(', ') + '\n' +
+    'Time: ' + selectedTime + '\n' +
+    'Address: ' + address + '\n' +
+    (phone ? 'Phone: ' + phone + '\n' : '') +
+    (notes ? 'Notes: ' + notes : '');
+
+  fetch('https://api.web3forms.com/submit', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+    body: JSON.stringify({
+      access_key: WEB3FORMS_KEY,
+      subject: 'New Appointment Request — ' + selectedTime,
+      name: name,
+      message: message,
+      from_name: 'Cleaning Crew Website'
+    })
+  })
+  .then(function(r){ return r.json(); })
+  .then(function(data) {
+    if (data.success) {
+      status.style.display = 'block';
+      status.style.background = 'rgba(12,158,153,0.1)';
+      status.style.color = 'var(--accent)';
+      status.innerHTML = '✅ Request sent! We\'ll confirm your appointment soon.';
+      btn.textContent = 'Request Sent!';
+    } else {
+      throw new Error('Failed');
+    }
+  })
+  .catch(function() {
+    btn.textContent = 'Send Appointment Request';
+    btn.disabled = false;
+    status.style.display = 'block';
+    status.style.background = 'rgba(200,50,50,0.1)';
+    status.style.color = '#c0392b';
+    status.textContent = 'Something went wrong — email us directly at Cleaningcrew1101@gmail.com';
+  });
 }
 </script>
 
