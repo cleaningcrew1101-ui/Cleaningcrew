@@ -647,27 +647,164 @@
     <div class="label">Get started</div>
     <h2 class="heading">Book an Appointment</h2>
   </div>
-  <div class="book-grid">
-    <div class="book-card">
-      <h3>Request a time</h3>
-      <p>Send us an email with your address, what service you need, and a few times that work for you. We'll get back to you quickly to confirm.</p>
-      <a href="mailto:Cleaningcrew1101@gmail.com?subject=Appointment%20Request&body=Hi%20Cleaning%20Crew!%0A%0AService%20I%20need%3A%0AAddress%3A%0ATimes%20that%20work%3A%0AAnything%20else%3A" class="book-cta teal">Email Us to Book</a>
-      <div class="pay-note">
-        <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5" stroke="currentColor" stroke-width="1.2"/><path d="M6 4v2.5l1.5 1" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
-        We'll confirm your time by email
-      </div>
+
+  <!-- Step 1: Services -->
+  <div style="margin-bottom:2rem;">
+    <div class="label" style="margin-bottom:0.85rem;">Step 1 — What do you need?</div>
+    <div id="service-picker" style="display:flex;flex-wrap:wrap;gap:0.6rem;"></div>
+  </div>
+
+  <!-- Step 2: Time -->
+  <div style="margin-bottom:2rem;">
+    <div class="label" style="margin-bottom:0.85rem;">Step 2 — Pick a time</div>
+    <div id="schedule-container">
+      <p style="color:var(--ink-soft);font-size:0.9rem;">No times available right now — email us directly below.</p>
     </div>
-    <div class="book-card">
-      <h3>Pay after we're done</h3>
-      <p>No deposit, no upfront payment. Check the work when we're finished — if you're happy, pay via Venmo. Simple as that.</p>
-      <a href="https://venmo.com/u/Hudson-Allmon" target="_blank" rel="noopener" class="book-cta warm">Pay via Venmo @Hudson-Allmon</a>
-      <div class="pay-note">
-        <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        Only pay after service is complete
-      </div>
+  </div>
+
+  <!-- Step 3: Address + Submit -->
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:1.75rem;max-width:560px;">
+    <div class="label" style="margin-bottom:0.85rem;">Step 3 — Your address</div>
+    <input id="address-input" type="text" placeholder="123 Main St, Phoenix, AZ" style="width:100%;padding:0.65rem 0.9rem;border:1.5px solid var(--border);border-radius:8px;background:var(--bg);color:var(--ink);font-family:'DM Sans',sans-serif;font-size:0.95rem;margin-bottom:1rem;outline:none;" onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'">
+    <button id="book-btn" onclick="submitBooking()" style="width:100%;padding:0.85rem;background:var(--accent);color:#fff;border:none;border-radius:8px;font-family:'Outfit',sans-serif;font-weight:700;font-size:0.95rem;cursor:pointer;transition:background 0.15s;" onmouseover="this.style.background='var(--accent-dim)'" onmouseout="this.style.background='var(--accent)'">Request Appointment</button>
+    <p style="margin-top:0.85rem;font-size:0.8rem;color:var(--ink-faint);text-align:center;">This opens your email app with everything pre-filled. We'll confirm within a few hours.</p>
+  </div>
+
+  <!-- Pay after note -->
+  <div style="margin-top:2rem;display:flex;align-items:flex-start;gap:1rem;max-width:560px;background:var(--bg-alt);border:1px solid var(--border);border-radius:12px;padding:1.25rem;">
+    <div style="font-size:1.4rem;flex-shrink:0;">💸</div>
+    <div>
+      <div style="font-family:'Outfit',sans-serif;font-weight:700;font-size:0.95rem;margin-bottom:0.25rem;">Pay after we're done — not before</div>
+      <div style="font-size:0.88rem;color:var(--ink-soft);line-height:1.55;">No deposit, no upfront cost. Once you're happy with the work, pay via <a href="https://venmo.com/u/Hudson-Allmon" target="_blank" rel="noopener" style="color:var(--accent);font-weight:600;">Venmo @Hudson-Allmon</a>. We'll remind you when we're finished.</div>
     </div>
   </div>
 </section>
+
+<script>
+// ─────────────────────────────────────────────
+// EDIT YOUR SCHEDULE HERE on GitHub
+// Delete a time to remove it, delete a whole line to close that day
+// ─────────────────────────────────────────────
+var schedule = {
+  "Monday":    ["3:30 PM", "4:30 PM", "5:30 PM"],
+  "Tuesday":   ["3:30 PM", "4:30 PM", "5:30 PM"],
+  "Wednesday": ["3:30 PM", "4:30 PM", "5:30 PM"],
+  "Thursday":  ["3:30 PM", "4:30 PM", "5:30 PM"],
+  "Friday":    ["3:30 PM", "4:30 PM", "5:30 PM"],
+  "Saturday":  ["8:00 AM", "10:00 AM", "12:00 PM", "2:00 PM", "4:00 PM"],
+  "Sunday":    ["9:00 AM", "11:00 AM", "1:00 PM", "3:00 PM"]
+};
+// ─────────────────────────────────────────────
+
+var selectedServices = {};
+var selectedTime = '';
+
+var services = [
+  { id: 'trash',     label: '🗑️ Trash Can Cleaning',       price: '$40 for 2' },
+  { id: 'walls',     label: '🏠 Stucco Wall Wash',          price: '$40–60' },
+  { id: 'furniture', label: '🪑 Patio Furniture',           price: '$25–35' },
+  { id: 'sidewalk',  label: '🚶 Sidewalk & Curb Washing',   price: '$20–30' }
+];
+
+// Build service picker
+(function() {
+  var picker = document.getElementById('service-picker');
+  services.forEach(function(s) {
+    var btn = document.createElement('button');
+    btn.id = 'svc-' + s.id;
+    btn.innerHTML = '<span>' + s.label + '</span><span style="font-size:0.75rem;opacity:0.7;margin-left:0.4rem;">' + s.price + '</span>';
+    btn.style.cssText = 'display:inline-flex;align-items:center;gap:0.3rem;padding:0.55rem 1rem;border:1.5px solid var(--border);border-radius:99px;background:var(--surface);color:var(--ink);font-family:DM Sans,sans-serif;font-size:0.88rem;cursor:pointer;transition:all 0.15s;';
+    btn.onclick = function() {
+      if (selectedServices[s.id]) {
+        delete selectedServices[s.id];
+        btn.style.background = 'var(--surface)';
+        btn.style.borderColor = 'var(--border)';
+        btn.style.color = 'var(--ink)';
+      } else {
+        selectedServices[s.id] = s.label.replace(/^[^\s]+\s/, '');
+        btn.style.background = 'var(--accent)';
+        btn.style.borderColor = 'var(--accent)';
+        btn.style.color = '#fff';
+      }
+    };
+    picker.appendChild(btn);
+  });
+})();
+
+// Build schedule grid
+(function() {
+  var container = document.getElementById('schedule-container');
+  var days = Object.keys(schedule).filter(function(d) { return schedule[d] && schedule[d].length > 0; });
+  if (!days.length) return;
+
+  var wrap = document.createElement('div');
+  wrap.style.cssText = 'display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:0.85rem;';
+
+  days.forEach(function(day) {
+    var col = document.createElement('div');
+    col.style.cssText = 'background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;';
+
+    var hdr = document.createElement('div');
+    hdr.style.cssText = 'background:var(--bg-alt);padding:0.5rem 0.85rem;border-bottom:1px solid var(--border);font-family:Outfit,sans-serif;font-weight:700;font-size:0.85rem;color:var(--ink);';
+    hdr.textContent = day;
+    col.appendChild(hdr);
+
+    var slots = document.createElement('div');
+    slots.style.cssText = 'padding:0.5rem;display:flex;flex-direction:column;gap:0.35rem;';
+
+    schedule[day].forEach(function(time) {
+      var slot = document.createElement('button');
+      slot.textContent = time;
+      slot.dataset.time = day + ' ' + time;
+      slot.style.cssText = 'display:block;width:100%;padding:0.4rem 0.5rem;background:var(--bg-alt);border:1.5px solid var(--border);border-radius:6px;font-family:Outfit,sans-serif;font-weight:600;font-size:0.8rem;color:var(--accent);cursor:pointer;transition:all 0.15s;';
+      slot.onclick = function() {
+        // Deselect all
+        document.querySelectorAll('#schedule-container button').forEach(function(b) {
+          b.style.background = 'var(--bg-alt)';
+          b.style.borderColor = 'var(--border)';
+          b.style.color = 'var(--accent)';
+        });
+        // Select this one
+        selectedTime = slot.dataset.time;
+        slot.style.background = 'var(--accent)';
+        slot.style.borderColor = 'var(--accent)';
+        slot.style.color = '#fff';
+      };
+      slots.appendChild(slot);
+    });
+
+    col.appendChild(slots);
+    wrap.appendChild(col);
+  });
+
+  var note = document.createElement('p');
+  note.style.cssText = 'margin-top:0.75rem;font-size:0.78rem;color:var(--ink-faint);';
+  note.textContent = 'Tap a time to select it. To change availability, edit the schedule in index.html on GitHub.';
+
+  container.innerHTML = '';
+  container.appendChild(wrap);
+  container.appendChild(note);
+})();
+
+function submitBooking() {
+  var address = document.getElementById('address-input').value.trim();
+  var svcList = Object.values(selectedServices);
+
+  if (!svcList.length) { alert('Please select at least one service.'); return; }
+  if (!selectedTime) { alert('Please pick a time slot.'); return; }
+  if (!address) { alert('Please enter your address.'); return; }
+
+  var subject = encodeURIComponent('Appointment Request — ' + selectedTime);
+  var body = encodeURIComponent(
+    'Hi Cleaning Crew!\n\n' +
+    'Services needed:\n' + svcList.map(function(s){ return '  • ' + s; }).join('\n') + '\n\n' +
+    'Requested time: ' + selectedTime + '\n\n' +
+    'Address: ' + address + '\n\n' +
+    'Anything else:\n'
+  );
+  window.location.href = 'mailto:Cleaningcrew1101@gmail.com?subject=' + subject + '&body=' + body;
+}
+</script>
 
 <!-- FOOTER -->
 <footer>
