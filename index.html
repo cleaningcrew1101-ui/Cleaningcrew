@@ -589,31 +589,52 @@
       </div>
     </div>
 
-    <!-- Patio Furniture -->
+    <!-- Driveway -->
     <div class="service-card">
-      <div class="service-icon">🪑</div>
-      <h3>Patio Furniture Cleaning</h3>
-      <p class="service-desc">Chairs, tables, umbrella frames — the sun and desert dust are rough on outdoor furniture. We bring it back to life.</p>
+      <div class="service-icon">🚗</div>
+      <h3>Driveway Washing</h3>
+      <p class="service-desc">AZ dust and dirt build up fast on driveways. We blast it clean — pavers, concrete, and brick all welcome.</p>
       <div class="price-row">
         <div class="price-item">
-          <span class="price-amount">$25–$35</span>
-          <span class="price-label">per session</span>
+          <span class="price-amount">$30–$50</span>
+          <span class="price-label">one-time</span>
+        </div>
+        <div class="price-item">
+          <span class="price-amount">$25</span>
+          <span class="price-label">monthly</span>
         </div>
       </div>
     </div>
 
-    <!-- Sidewalks -->
+    <!-- Patio & Walkway -->
     <div class="service-card">
-      <div class="service-icon">🚶</div>
-      <h3>Sidewalk &amp; Curb Washing</h3>
-      <p class="service-desc">Makes the front of your home look sharp instantly. Great to pair with another service for a full exterior refresh.</p>
+      <div class="service-icon">🌿</div>
+      <h3>Patio &amp; Walkway Cleaning</h3>
+      <p class="service-desc">Your outdoor space deserves to look good. We clean patios, walkways, and pool decks so you can enjoy the AZ outdoors.</p>
       <div class="price-row">
         <div class="price-item">
-          <span class="price-amount">$20–$30</span>
+          <span class="price-amount">$25–$40</span>
           <span class="price-label">one-time</span>
         </div>
         <div class="price-item">
           <span class="price-amount">$20</span>
+          <span class="price-label">monthly</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Fence & Gate -->
+    <div class="service-card">
+      <div class="service-icon">🔩</div>
+      <h3>Fence &amp; Gate Washing</h3>
+      <p class="service-desc">Block walls, iron gates, and vinyl fences collect dust and grime year-round. We make them look like new again.</p>
+      <div class="price-row">
+        <div class="price-item">
+          <span class="price-amount">$30–$50</span>
+          <span class="price-label">one-time</span>
+        </div>
+        <div class="price-item">
+          <span class="price-amount">$25</span>
           <span class="price-label">monthly</span>
         </div>
       </div>
@@ -705,10 +726,11 @@ var selectedServices = {};
 var selectedTime = '';
 
 var services = [
-  { id: 'trash',     label: '🗑️ Trash Can Cleaning',       price: '$40 for 2' },
-  { id: 'walls',     label: '🏠 Stucco Wall Wash',          price: '$40–60' },
-  { id: 'furniture', label: '🪑 Patio Furniture',           price: '$25–35' },
-  { id: 'sidewalk',  label: '🚶 Sidewalk & Curb Washing',   price: '$20–30' }
+  { id: 'trash',     label: '🗑️ Trash Can Cleaning',     price: '$40 for 2' },
+  { id: 'walls',     label: '🏠 Stucco Wall Wash',        price: '$40–60' },
+  { id: 'driveway',  label: '🚗 Driveway Washing',        price: '$30–50' },
+  { id: 'patio',     label: '🌿 Patio & Walkway',         price: '$25–40' },
+  { id: 'fence',     label: '🔩 Fence & Gate Washing',    price: '$30–50' }
 ];
 
 // Build service picker
