@@ -1,0 +1,676 @@
+<title>Cleaning Crew AZ</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap">
+<style>
+  /* ── Tokens ── */
+  :root {
+    --bg:          #F7F4EF;
+    --bg-alt:      #EDE9E2;
+    --surface:     #FFFFFF;
+    --ink:         #1A1815;
+    --ink-soft:    #6B6458;
+    --ink-faint:   #A89F94;
+    --accent:      #0C9E99;
+    --accent-dim:  #0B8A85;
+    --warm:        #E07B10;
+    --border:      #DDD9D1;
+    --shadow:      rgba(26,24,21,.07);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg:        #141210;
+      --bg-alt:    #1C1A17;
+      --surface:   #222018;
+      --ink:       #F0EDE6;
+      --ink-soft:  #9B9488;
+      --ink-faint: #5A554D;
+      --accent:    #14B8B2;
+      --accent-dim:#10A39E;
+      --warm:      #F08E28;
+      --border:    #2C2A25;
+      --shadow:    rgba(0,0,0,.25);
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg:        #141210;
+    --bg-alt:    #1C1A17;
+    --surface:   #222018;
+    --ink:       #F0EDE6;
+    --ink-soft:  #9B9488;
+    --ink-faint: #5A554D;
+    --accent:    #14B8B2;
+    --accent-dim:#10A39E;
+    --warm:      #F08E28;
+    --border:    #2C2A25;
+    --shadow:    rgba(0,0,0,.25);
+  }
+
+  /* ── Reset ── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  img { max-width: 100%; display: block; }
+  a { color: inherit; text-decoration: none; }
+  @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; } }
+
+  /* ── Typography ── */
+  .display {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 800;
+    line-height: 1.05;
+    text-wrap: balance;
+  }
+  .heading {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 700;
+    text-wrap: balance;
+  }
+  .label {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+
+  /* ── Nav ── */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    height: 58px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+  }
+  .nav-logo {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 800;
+    font-size: 1.15rem;
+    letter-spacing: -0.02em;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .nav-logo .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+    display: inline-block;
+    flex-shrink: 0;
+  }
+  .nav-links {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+  }
+  .nav-links a {
+    font-size: 0.88rem;
+    font-weight: 500;
+    color: var(--ink-soft);
+    transition: color 0.15s;
+  }
+  .nav-links a:hover { color: var(--ink); }
+  .nav-book {
+    background: var(--ink);
+    color: var(--bg);
+    font-family: 'Outfit', sans-serif;
+    font-weight: 600;
+    font-size: 0.85rem;
+    padding: 0.45rem 1.1rem;
+    border-radius: 6px;
+    transition: background 0.15s;
+    white-space: nowrap;
+  }
+  .nav-book:hover { background: var(--accent); }
+  @media (max-width: 600px) {
+    .nav-links { display: none; }
+  }
+
+  /* ── Hero ── */
+  .hero {
+    position: relative;
+    overflow: hidden;
+    padding: 5rem 2rem 4.5rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .hero-cc {
+    position: absolute;
+    right: -1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: 'Outfit', sans-serif;
+    font-weight: 900;
+    font-size: clamp(160px, 22vw, 280px);
+    color: var(--border);
+    line-height: 1;
+    user-select: none;
+    pointer-events: none;
+    letter-spacing: -0.06em;
+    opacity: 0.7;
+  }
+  .hero-content { position: relative; max-width: 620px; }
+  .hero-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--bg-alt);
+    border: 1px solid var(--border);
+    border-radius: 99px;
+    padding: 0.25rem 0.85rem 0.25rem 0.5rem;
+    margin-bottom: 1.75rem;
+  }
+  .hero-eyebrow .pip {
+    width: 6px; height: 6px;
+    background: var(--accent);
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .hero-eyebrow span {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--ink-soft);
+    letter-spacing: 0.04em;
+  }
+  .hero h1 {
+    font-size: clamp(2.6rem, 6vw, 4.2rem);
+    margin-bottom: 1.25rem;
+    color: var(--ink);
+  }
+  .hero h1 em {
+    font-style: normal;
+    color: var(--accent);
+  }
+  .hero-sub {
+    font-size: 1.05rem;
+    color: var(--ink-soft);
+    max-width: 480px;
+    margin-bottom: 2rem;
+    line-height: 1.65;
+  }
+  .hero-actions { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+  .btn-primary {
+    display: inline-block;
+    background: var(--accent);
+    color: #fff;
+    font-family: 'Outfit', sans-serif;
+    font-weight: 700;
+    font-size: 0.95rem;
+    padding: 0.75rem 1.75rem;
+    border-radius: 8px;
+    transition: background 0.15s, transform 0.12s;
+  }
+  .btn-primary:hover { background: var(--accent-dim); transform: translateY(-1px); }
+  .btn-secondary {
+    display: inline-block;
+    background: transparent;
+    border: 1.5px solid var(--border);
+    color: var(--ink);
+    font-family: 'Outfit', sans-serif;
+    font-weight: 600;
+    font-size: 0.95rem;
+    padding: 0.73rem 1.75rem;
+    border-radius: 8px;
+    transition: border-color 0.15s, background 0.15s;
+  }
+  .btn-secondary:hover { border-color: var(--ink-soft); background: var(--bg-alt); }
+  .hero-trust {
+    margin-top: 2.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+  }
+  .trust-item {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.82rem;
+    color: var(--ink-soft);
+  }
+  .trust-item svg { flex-shrink: 0; }
+
+  /* ── Section wrapper ── */
+  .section {
+    padding: 4.5rem 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .section-header { margin-bottom: 2.5rem; }
+  .section-header h2 {
+    font-size: clamp(1.7rem, 3.5vw, 2.4rem);
+    margin-top: 0.4rem;
+  }
+
+  /* ── How it works ── */
+  .how-band {
+    background: var(--bg-alt);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+  .how-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 3rem 2rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2rem;
+  }
+  .how-step { display: flex; flex-direction: column; gap: 0.5rem; }
+  .how-num {
+    font-family: 'Outfit', sans-serif;
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--accent);
+    line-height: 1;
+  }
+  .how-step h3 {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+  }
+  .how-step p { font-size: 0.88rem; color: var(--ink-soft); line-height: 1.55; }
+
+  /* ── Services ── */
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.25rem;
+  }
+  .service-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 8px var(--shadow);
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+  .service-card.featured {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 1px var(--accent), 0 4px 16px var(--shadow);
+  }
+  .service-icon {
+    width: 40px; height: 40px;
+    border-radius: 10px;
+    background: var(--bg-alt);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    margin-bottom: 0.25rem;
+  }
+  .service-card.featured .service-icon { background: rgba(12,158,153,0.12); }
+  .service-card h3 {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 700;
+    font-size: 1.05rem;
+  }
+  .service-desc { font-size: 0.88rem; color: var(--ink-soft); line-height: 1.55; flex: 1; }
+  .price-row {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-top: 0.4rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--border);
+  }
+  .price-item { display: flex; flex-direction: column; gap: 0.1rem; }
+  .price-amount {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 700;
+    font-size: 1.15rem;
+    color: var(--ink);
+    font-variant-numeric: tabular-nums;
+  }
+  .price-amount.accent { color: var(--accent); }
+  .price-label { font-size: 0.72rem; color: var(--ink-faint); font-weight: 500; }
+  .badge {
+    display: inline-block;
+    background: rgba(12,158,153,0.12);
+    color: var(--accent);
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 0.18rem 0.55rem;
+    border-radius: 99px;
+    align-self: flex-start;
+  }
+
+  /* ── Service area ── */
+  .area-band {
+    background: var(--ink);
+    color: var(--bg);
+  }
+  .area-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 4rem 2rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: center;
+  }
+  @media (max-width: 700px) { .area-inner { grid-template-columns: 1fr; } }
+  .area-content h2 {
+    font-family: 'Outfit', sans-serif;
+    font-size: clamp(1.7rem, 3.5vw, 2.2rem);
+    font-weight: 800;
+    color: #fff;
+    margin-bottom: 1rem;
+    text-wrap: balance;
+  }
+  .area-content p { font-size: 0.95rem; color: rgba(255,255,255,0.55); line-height: 1.65; margin-bottom: 1rem; }
+  .hood-list { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
+  .hood-list li {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    font-family: 'Outfit', sans-serif;
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: rgba(255,255,255,0.9);
+  }
+  .hood-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
+  .area-note {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 10px;
+    padding: 1.25rem;
+  }
+  .area-note p { font-size: 0.85rem; color: rgba(255,255,255,0.5); margin: 0; }
+  .area-note strong { color: rgba(255,255,255,0.8); }
+
+  /* ── Booking / Contact ── */
+  .book-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    align-items: start;
+  }
+  @media (max-width: 720px) { .book-grid { grid-template-columns: 1fr; } }
+  .book-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 2rem;
+    box-shadow: 0 2px 12px var(--shadow);
+  }
+  .book-card h3 {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 700;
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+  }
+  .book-card p { font-size: 0.88rem; color: var(--ink-soft); margin-bottom: 1.5rem; line-height: 1.6; }
+  .book-cta {
+    display: block;
+    width: 100%;
+    text-align: center;
+    padding: 0.85rem;
+    border-radius: 8px;
+    font-family: 'Outfit', sans-serif;
+    font-weight: 700;
+    font-size: 0.95rem;
+    transition: all 0.15s;
+  }
+  .book-cta.teal { background: var(--accent); color: #fff; }
+  .book-cta.teal:hover { background: var(--accent-dim); }
+  .book-cta.warm { background: var(--warm); color: #fff; }
+  .book-cta.warm:hover { opacity: 0.88; }
+  .pay-note {
+    margin-top: 1rem;
+    font-size: 0.78rem;
+    color: var(--ink-faint);
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.35rem;
+  }
+
+  /* ── Footer ── */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 2rem;
+    text-align: center;
+    color: var(--ink-faint);
+    font-size: 0.82rem;
+  }
+  footer strong { color: var(--ink-soft); }
+
+  /* ── Divider ── */
+  .divider {
+    height: 1px;
+    background: var(--border);
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+</style>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">
+    <span class="dot"></span>
+    Cleaning Crew
+  </div>
+  <ul class="nav-links">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#area">Service Area</a></li>
+    <li><a href="#book">Book</a></li>
+  </ul>
+  <a href="#book" class="nav-book">Book Now</a>
+</nav>
+
+<!-- HERO -->
+<div style="overflow:hidden;">
+  <div class="hero">
+    <div class="hero-cc" aria-hidden="true">CC</div>
+    <div class="hero-content">
+      <div class="hero-eyebrow">
+        <span class="pip"></span>
+        <span>Sky Crossing &amp; Fireside · North Phoenix, AZ</span>
+      </div>
+      <h1 class="display">Your yard. <em>Actually clean.</em></h1>
+      <p class="hero-sub">We handle the gross stuff — trash cans, stucco walls, patio furniture, and sidewalks. You don't lift a finger. You pay after we're done.</p>
+      <div class="hero-actions">
+        <a href="#book" class="btn-primary">Book an Appointment</a>
+        <a href="#services" class="btn-secondary">See Pricing</a>
+      </div>
+      <div class="hero-trust">
+        <div class="trust-item">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <path d="M7 1l1.545 3.13L12 4.635l-2.5 2.435.59 3.44L7 8.885l-3.09 1.625L4.5 7.07 2 4.635l3.455-.505L7 1z" fill="var(--accent)"/>
+          </svg>
+          <span>Local neighborhood crew</span>
+        </div>
+        <div class="trust-item">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <circle cx="7" cy="7" r="6" stroke="var(--accent)" stroke-width="1.5"/>
+            <path d="M4.5 7l2 2 3-3" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span>Pay after service — no upfront</span>
+        </div>
+        <div class="trust-item">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <path d="M2 7c0-2.76 2.24-5 5-5s5 2.24 5 5-2.24 5-5 5-5-2.24-5-5z" stroke="var(--accent)" stroke-width="1.5"/>
+            <path d="M7 4.5v2.75l1.5 1.5" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+          <span>Monthly plans available</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- HOW IT WORKS -->
+<div class="how-band">
+  <div class="how-inner">
+    <div class="how-step">
+      <div class="how-num">01</div>
+      <h3>Request a time</h3>
+      <p>Send us a message with your address and what you need. We'll confirm a time that works.</p>
+    </div>
+    <div class="how-step">
+      <div class="how-num">02</div>
+      <h3>We show up &amp; clean</h3>
+      <p>Bring the power washer to your place. You don't need to be home — just let us know where things are.</p>
+    </div>
+    <div class="how-step">
+      <div class="how-num">03</div>
+      <h3>Pay after we're done</h3>
+      <p>Check the work. Happy with it? Pay via Venmo. No upfront cost, no risk.</p>
+    </div>
+  </div>
+</div>
+
+<!-- SERVICES -->
+<div class="divider"></div>
+<section class="section" id="services">
+  <div class="section-header">
+    <div class="label">What we do</div>
+    <h2 class="heading">Services &amp; Pricing</h2>
+  </div>
+  <div class="services-grid">
+
+    <!-- Trash Cans (featured) -->
+    <div class="service-card featured">
+      <div class="service-icon">🗑️</div>
+      <span class="badge">Most Popular</span>
+      <h3>Trash Can Cleaning</h3>
+      <p class="service-desc">Full power wash inside and out — removes grime, odors, and bacteria. Set up a monthly plan and never think about it again.</p>
+      <div class="price-row">
+        <div class="price-item">
+          <span class="price-amount accent">$40</span>
+          <span class="price-label">2 cans · one-time</span>
+        </div>
+        <div class="price-item">
+          <span class="price-amount accent">$30</span>
+          <span class="price-label">2 cans · monthly</span>
+        </div>
+        <div class="price-item">
+          <span class="price-amount" style="font-size:0.95rem">+$15 / +$10</span>
+          <span class="price-label">extra can (one-time / mo)</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stucco Walls -->
+    <div class="service-card">
+      <div class="service-icon">🏠</div>
+      <h3>Exterior Wall &amp; Stucco Washing</h3>
+      <p class="service-desc">AZ dust sticks to stucco. We clear it off with the right pressure — low enough not to damage, strong enough to actually clean.</p>
+      <div class="price-row">
+        <div class="price-item">
+          <span class="price-amount">$40–$60</span>
+          <span class="price-label">one-time</span>
+        </div>
+        <div class="price-item">
+          <span class="price-amount">$35</span>
+          <span class="price-label">monthly</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Patio Furniture -->
+    <div class="service-card">
+      <div class="service-icon">🪑</div>
+      <h3>Patio Furniture Cleaning</h3>
+      <p class="service-desc">Chairs, tables, umbrella frames — the sun and desert dust are rough on outdoor furniture. We bring it back to life.</p>
+      <div class="price-row">
+        <div class="price-item">
+          <span class="price-amount">$25–$35</span>
+          <span class="price-label">per session</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sidewalks -->
+    <div class="service-card">
+      <div class="service-icon">🚶</div>
+      <h3>Sidewalk &amp; Curb Washing</h3>
+      <p class="service-desc">Makes the front of your home look sharp instantly. Great to pair with another service for a full exterior refresh.</p>
+      <div class="price-row">
+        <div class="price-item">
+          <span class="price-amount">$20–$30</span>
+          <span class="price-label">one-time</span>
+        </div>
+        <div class="price-item">
+          <span class="price-amount">$20</span>
+          <span class="price-label">monthly</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+<div class="divider"></div>
+
+<!-- SERVICE AREA -->
+<div class="area-band" id="area">
+  <div class="area-inner">
+    <div class="area-content">
+      <h2>Serving North Phoenix neighborhoods</h2>
+      <p>We're based in Sky Crossing and Fireside — your neighbors doing this work. We know the area, we're easy to reach, and we'll be there when we say we will.</p>
+      <ul class="hood-list">
+        <li><span class="hood-dot"></span>Sky Crossing</li>
+        <li><span class="hood-dot"></span>Fireside</li>
+        <li><span class="hood-dot"></span>Surrounding North Phoenix communities</li>
+      </ul>
+    </div>
+    <div class="area-note">
+      <p><strong>Not sure if we cover your address?</strong><br><br>Just send us a message. If you're more than ~3 miles outside our main neighborhoods, we may add a small travel fee — we'll always be upfront about it before booking.</p>
+    </div>
+  </div>
+</div>
+
+<!-- BOOK & CONTACT -->
+<section class="section" id="book">
+  <div class="section-header">
+    <div class="label">Get started</div>
+    <h2 class="heading">Book an Appointment</h2>
+  </div>
+  <div class="book-grid">
+    <div class="book-card">
+      <h3>Request a time</h3>
+      <p>Send us an email with your address, what service you need, and a few times that work for you. We'll get back to you quickly to confirm.</p>
+      <a href="mailto:Cleaningcrew1101@gmail.com?subject=Appointment%20Request&body=Hi%20Cleaning%20Crew!%0A%0AService%20I%20need%3A%0AAddress%3A%0ATimes%20that%20work%3A%0AAnything%20else%3A" class="book-cta teal">Email Us to Book</a>
+      <div class="pay-note">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5" stroke="currentColor" stroke-width="1.2"/><path d="M6 4v2.5l1.5 1" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+        We'll confirm your time by email
+      </div>
+    </div>
+    <div class="book-card">
+      <h3>Pay after we're done</h3>
+      <p>No deposit, no upfront payment. Check the work when we're finished — if you're happy, pay via Venmo. Simple as that.</p>
+      <a href="https://venmo.com/u/Hudson-Allmon" target="_blank" rel="noopener" class="book-cta warm">Pay via Venmo @Hudson-Allmon</a>
+      <div class="pay-note">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Only pay after service is complete
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p><strong>Cleaning Crew</strong> · Sky Crossing &amp; Fireside, North Phoenix, AZ</p>
+  <p style="margin-top:0.35rem;">Questions? <a href="mailto:Cleaningcrew1101@gmail.com" style="color:var(--accent);">Cleaningcrew1101@gmail.com</a></p>
+</footer>
